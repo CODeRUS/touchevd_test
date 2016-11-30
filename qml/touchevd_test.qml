@@ -10,9 +10,11 @@ Item {
     Connections {
         target: evdevInput
         onTouchPressed: {
+            console.log('###', points)
             processPoints(points)
         }
         onTouchMoved: {
+            console.log('###', points)
             processPoints(points)
         }
         onTouchReleased: {
@@ -21,6 +23,83 @@ Item {
             touchPoint3.visible = false
             touchPoint4.visible = false
             touchPoint5.visible = false
+        }
+        onTouchUpdate: {
+            console.log('###', index, JSON.stringify(parameters))
+            switch (index) {
+                case 0:
+                    touchPoint1.visible = !parameters['release']
+                    break
+                case 1:
+                    touchPoint2.visible = !parameters['release']
+                    break
+                case 2:
+                    touchPoint3.visible = !parameters['release']
+                    break
+                case 3:
+                    touchPoint4.visible = !parameters['release']
+                    break
+                case 4:
+                    touchPoint5.visible = !parameters['release']
+                    break
+            }
+            if (parameters.hasOwnProperty('pointX')) {
+                switch (index) {
+                    case 0:
+                        touchPoint1.posx = parameters['pointX']
+                        break
+                    case 1:
+                        touchPoint2.posx = parameters['pointX']
+                        break
+                    case 2:
+                        touchPoint3.posx = parameters['pointX']
+                        break
+                    case 3:
+                        touchPoint4.posx = parameters['pointX']
+                        break
+                    case 4:
+                        touchPoint5.posx = parameters['pointX']
+                        break
+                }
+            }
+            if (parameters.hasOwnProperty('pointY')) {
+                switch (index) {
+                    case 0:
+                        touchPoint1.posy = parameters['pointY']
+                        break
+                    case 1:
+                        touchPoint2.posy = parameters['pointY']
+                        break
+                    case 2:
+                        touchPoint3.posy = parameters['pointY']
+                        break
+                    case 3:
+                        touchPoint4.posy = parameters['pointY']
+                        break
+                    case 4:
+                        touchPoint5.posy = parameters['pointY']
+                        break
+                }
+            }
+            if (parameters.hasOwnProperty('pointWidth')) {
+                switch (index) {
+                    case 0:
+                        touchPoint1.size = parameters['pointWidth'] / 10
+                        break
+                    case 1:
+                        touchPoint2.size = parameters['pointWidth'] / 10
+                        break
+                    case 2:
+                        touchPoint3.size = parameters['pointWidth'] / 10
+                        break
+                    case 3:
+                        touchPoint4.size = parameters['pointWidth'] / 10
+                        break
+                    case 4:
+                        touchPoint5.size = parameters['pointWidth'] / 10
+                        break
+                }
+            }
         }
     }
 
@@ -88,6 +167,7 @@ Item {
         width: Theme.iconSizeLauncher * size
         height: Theme.iconSizeLauncher * size
         visible: false
+        color: "white"
     }
 
     GlassItem {
@@ -100,6 +180,7 @@ Item {
         width: Theme.iconSizeLauncher * size
         height: Theme.iconSizeLauncher * size
         visible: false
+        color: "green"
     }
 
     GlassItem {
@@ -112,6 +193,7 @@ Item {
         width: Theme.iconSizeLauncher * size
         height: Theme.iconSizeLauncher * size
         visible: false
+        color: "red"
     }
 
     GlassItem {
@@ -124,6 +206,7 @@ Item {
         width: Theme.iconSizeLauncher * size
         height: Theme.iconSizeLauncher * size
         visible: false
+        color: "green"
     }
 
     GlassItem {
@@ -136,6 +219,7 @@ Item {
         width: Theme.iconSizeLauncher * size
         height: Theme.iconSizeLauncher * size
         visible: false
+        color: "blue"
     }
 }
 

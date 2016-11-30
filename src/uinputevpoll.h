@@ -23,6 +23,8 @@ signals:
     void moved(const QVariantList &points);
     void released();
 
+    void update(int index, const QVariantMap & parameters);
+
 public slots:
     void findDevice();
     void doPoll();
@@ -35,6 +37,7 @@ private:
     QMutex mutex;
 
     int version;
+    int current_index;
     QVariantList touch_points;
     timeval last_moved;
     int moved_interval;

@@ -21,8 +21,9 @@ UinputEvPoll::UinputEvPoll(QObject *parent) :
     _polling = false;
     _abort = false;
     _uinputfd = -1;
-}
 
+    current_index = 0;
+}
 UinputEvPoll::~UinputEvPoll()
 {
     if (_polling) {
@@ -69,6 +70,9 @@ void UinputEvPoll::findDevice()
     closedir(dir);
     if (fd != -1) {
         requestPolling(fd);
+    }
+    else {
+        printf("Can't find suitable input device!\n");
     }
 }
 
@@ -181,13 +185,42 @@ void UinputEvPoll::readEvent(int fd)
 
         bool clean = true;
 
+        QVariantMap parameters;
+
         const size_t nevs = len / sizeof(struct input_event);
         size_t i;
         //printf("number of events: %d\n", nevs);
         for (i = 0; i < nevs; i++)
         {
             //printf("type: %d, code: %d, value: %d\n", evs[i].type, evs[i].code, evs[i].value);
-            if (version == 2) {
+            if (version == 3) {
+                int value = evs[i].value;
+                switch (evs[i].code) {
+                case SYN_REPORT:
+                    emit update(current_index, parameters);
+                    break;
+                case ABS_MT_TRACKING_ID:
+                    if (value == -1) {
+                        parameters["release"] = true;
+                    }
+                    break;
+                case ABS_MT_SLOT:
+                    current_index = value;
+                    break;
+                case ABS_MT_POSITION_X:
+                    parameters["pointX"] = value;
+                    break;
+                case ABS_MT_POSITION_Y:
+                    parameters["pointY"] = value;
+                    break;
+                case ABS_MT_WIDTH_MAJOR:
+                    parameters["pointWidth"] = value;
+                    break;
+                default:
+                    break;
+                }
+            }
+            else if (version == 2) {
                 if (evs[i].type == EV_SYN)
                 {
                     switch(evs[i].code) {
@@ -338,6 +371,12 @@ int UinputEvPoll::device_filter(int fd, char *name)
         else if (BIT(bits[EV_ABS], ABS_MT_POSITION_X) &&
              BIT(bits[EV_ABS], ABS_MT_POSITION_Y)) {
             printf("Device %s supports multi-touch events.\n", name);
+
+            if (BIT(bits[EV_ABS], ABS_MT_SLOT)) {
+                version = 3;
+                printf("Device %s supports multi-touch slot events.\n", name);
+                return 0;
+            }
 
             if (BIT(bits[0], EV_KEY)) {
                 if (ioctl(fd, EVIOCGBIT(EV_KEY, KEY_MAX), bits[EV_KEY]) == -1)
