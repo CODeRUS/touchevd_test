@@ -10,7 +10,7 @@ EvdevInput::EvdevInput(QObject *parent) :
 
     UinputEvPoll *evpoll = new UinputEvPoll();
     evpoll->moveToThread(evthread);
-    QObject::connect(evpoll, SIGNAL(update(int,QVariantMap)), this, SIGNAL(touchUpdate(int,QVariantMap)));
+    QObject::connect(evpoll, SIGNAL(update(QVariantList)), this, SIGNAL(touchUpdate(QVariantList)));
     QObject::connect(evpoll, SIGNAL(pressed(QVariantList)), this, SIGNAL(touchPressed(QVariantList)));
     QObject::connect(evpoll, SIGNAL(moved(QVariantList)), this, SIGNAL(touchMoved(QVariantList)));
     QObject::connect(evpoll, SIGNAL(released()), this, SIGNAL(touchReleased()));

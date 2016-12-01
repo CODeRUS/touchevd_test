@@ -185,7 +185,8 @@ void UinputEvPoll::readEvent(int fd)
 
         bool clean = true;
 
-        QVariantMap parameters;
+        QVariantList points;
+        points << QVariantMap() << QVariantMap() << QVariantMap() << QVariantMap() << QVariantMap();
 
         const size_t nevs = len / sizeof(struct input_event);
         size_t i;
@@ -197,25 +198,41 @@ void UinputEvPoll::readEvent(int fd)
                 int value = evs[i].value;
                 switch (evs[i].code) {
                 case SYN_REPORT:
-                    emit update(current_index, parameters);
+                    emit update(points);
                     break;
-                case ABS_MT_TRACKING_ID:
+                case ABS_MT_TRACKING_ID: {
                     if (value == -1) {
-                        parameters["release"] = true;
+                        QVariantMap point = points[current_index].toMap();
+                        point["released"] = true;
+                        point["active"] = true;
+                        points[current_index] = point;
                     }
                     break;
+                }
                 case ABS_MT_SLOT:
                     current_index = value;
                     break;
-                case ABS_MT_POSITION_X:
-                    parameters["pointX"] = value;
+                case ABS_MT_POSITION_X: {
+                    QVariantMap point = points[current_index].toMap();
+                    point["pointX"] = value;
+                    point["active"] = true;
+                    points[current_index] = point;
                     break;
-                case ABS_MT_POSITION_Y:
-                    parameters["pointY"] = value;
+                }
+                case ABS_MT_POSITION_Y: {
+                    QVariantMap point = points[current_index].toMap();
+                    point["pointY"] = value;
+                    point["active"] = true;
+                    points[current_index] = point;
                     break;
-                case ABS_MT_WIDTH_MAJOR:
-                    parameters["pointWidth"] = value;
+                }
+                case ABS_MT_WIDTH_MAJOR: {
+                    QVariantMap point = points[current_index].toMap();
+                    point["pointWidth"] = value;
+                    point["active"] = true;
+                    points[current_index] = point;
                     break;
+                }
                 default:
                     break;
                 }

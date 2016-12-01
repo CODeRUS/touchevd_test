@@ -25,79 +25,65 @@ Item {
             touchPoint5.visible = false
         }
         onTouchUpdate: {
-            console.log('###', index, JSON.stringify(parameters))
-            switch (index) {
-                case 0:
-                    touchPoint1.visible = !parameters['release']
-                    break
-                case 1:
-                    touchPoint2.visible = !parameters['release']
-                    break
-                case 2:
-                    touchPoint3.visible = !parameters['release']
-                    break
-                case 3:
-                    touchPoint4.visible = !parameters['release']
-                    break
-                case 4:
-                    touchPoint5.visible = !parameters['release']
-                    break
-            }
-            if (parameters.hasOwnProperty('pointX')) {
-                switch (index) {
-                    case 0:
-                        touchPoint1.posx = parameters['pointX']
-                        break
-                    case 1:
-                        touchPoint2.posx = parameters['pointX']
-                        break
-                    case 2:
-                        touchPoint3.posx = parameters['pointX']
-                        break
-                    case 3:
-                        touchPoint4.posx = parameters['pointX']
-                        break
-                    case 4:
-                        touchPoint5.posx = parameters['pointX']
-                        break
+            //console.log('###', JSON.stringify(points))
+            if (points[0].active) {
+                touchPoint1.visible = !points[0].released
+                if (!!points[0].pointX) {
+                    touchPoint1.posx = points[0].pointX
+                }
+                if (!!points[0].pointY) {
+                    touchPoint1.posy = points[0].pointY
+                }
+                if (!!points[0].pointWidth) {
+                    touchPoint1.size = points[0].pointWidth / 10
                 }
             }
-            if (parameters.hasOwnProperty('pointY')) {
-                switch (index) {
-                    case 0:
-                        touchPoint1.posy = parameters['pointY']
-                        break
-                    case 1:
-                        touchPoint2.posy = parameters['pointY']
-                        break
-                    case 2:
-                        touchPoint3.posy = parameters['pointY']
-                        break
-                    case 3:
-                        touchPoint4.posy = parameters['pointY']
-                        break
-                    case 4:
-                        touchPoint5.posy = parameters['pointY']
-                        break
+            if (points[1].active) {
+                touchPoint2.visible = !points[1].released
+                if (!!points[1].pointX) {
+                    touchPoint2.posx = points[1].pointX
+                }
+                if (!!points[1].pointY) {
+                    touchPoint2.posy = points[1].pointY
+                }
+                if (!!points[1].pointWidth) {
+                    touchPoint2.size = points[1].pointWidth / 10
                 }
             }
-            if (parameters.hasOwnProperty('pointWidth')) {
-                switch (index) {
-                    case 0:
-                        touchPoint1.size = parameters['pointWidth'] / 10
-                        break
-                    case 1:
-                        touchPoint2.size = parameters['pointWidth'] / 10
-                        break
-                    case 2:
-                        touchPoint3.size = parameters['pointWidth'] / 10
-                        break
-                    case 3:
-                        touchPoint4.size = parameters['pointWidth'] / 10
-                        break
-                    case 4:
-                        touchPoint5.size = parameters['pointWidth'] / 10
-                        break
+            if (points[2].active) {
+                touchPoint3.visible = !points[2].released
+                if (!!points[2].pointX) {
+                    touchPoint3.posx = points[2].pointX
+                }
+                if (!!points[2].pointY) {
+                    touchPoint3.posy = points[2].pointY
+                }
+                if (!!points[2].pointWidth) {
+                    touchPoint3.size = points[2].pointWidth / 10
+                }
+            }
+            if (points[3].active) {
+                touchPoint4.visible = !points[3].released
+                if (!!points[3].pointX) {
+                    touchPoint4.posx = points[3].pointX
+                }
+                if (!!points[3].pointY) {
+                    touchPoint4.posy = points[3].pointY
+                }
+                if (!!points[3].pointWidth) {
+                    touchPoint4.size = points[3].pointWidth / 10
+                }
+            }
+            if (points[4].active) {
+                touchPoint5.visible = !points[4].released
+                if (!!points[4].pointX) {
+                    touchPoint5.posx = points[4].pointX
+                }
+                if (!!points[4].pointY) {
+                    touchPoint5.posy = points[4].pointY
+                }
+                if (!!points[4].pointWidth) {
+                    touchPoint5.size = points[4].pointWidth / 10
                 }
             }
         }
@@ -206,7 +192,7 @@ Item {
         width: Theme.iconSizeLauncher * size
         height: Theme.iconSizeLauncher * size
         visible: false
-        color: "green"
+        color: "yellow"
     }
 
     GlassItem {

@@ -23,7 +23,7 @@ signals:
     void moved(const QVariantList &points);
     void released();
 
-    void update(int index, const QVariantMap & parameters);
+    void update(const QVariantList & points);
 
 public slots:
     void findDevice();

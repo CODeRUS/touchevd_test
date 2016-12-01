@@ -10,7 +10,7 @@ public:
     explicit EvdevInput(QObject *parent = 0);
 
 signals:
-    void touchUpdate(int index, const QVariantMap & parameters);
+    void touchUpdate(const QVariantList & points);
 
     void touchPressed(const QVariantList &points);
     void touchMoved(const QVariantList &points);
